@@ -2,6 +2,7 @@
 #define GAME_HPP
 
 #include "../entity_manager/entity_manager.hpp"
+#include "../sound/sound.hpp"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_render.h>
@@ -33,8 +34,8 @@ public:
 
 private:
     bool isRunning = false;
+    bool m_toggleMusic = false;
     std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> m_Window;
-    std::unique_ptr<SDL_Surface> m_ScreenSurface, m_tmpSurface;
     std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> m_Renderer;
 
     // Background Texture
@@ -42,6 +43,8 @@ private:
 
     // Entitiy Manager
     std::unique_ptr<EntityManager> m_EntityManager;
+    // Game Sound
+    std::unique_ptr<GameSound> m_GameSound;
 };
 
 #endif // GAME_HPP

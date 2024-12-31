@@ -2,6 +2,7 @@
 #define ENTITY_MANAGER_HPP
 
 #include "../entity/entity.hpp"
+#include "../sound/sound.hpp"
 
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_render.h>
@@ -14,12 +15,17 @@ public:
     {}
     void addEntity(const std::string& path, SDL_Renderer* renderer, Entity::Type t);
     void handleEvent(SDL_Event& event);
+    void handleCollison(GameSound* gameSound);
     void render(SDL_Renderer* renderer);
 
     // Entities
     std::vector<std::unique_ptr<Entity>> m_Entities;
 
 private:
+
+    int m_PlayerScore = 0;
+    int m_EnemyScore = 0;
+
     int m_SCREEN_WIDTH = 1280;
     int m_SCREEN_HEIGHT = 720;
 };

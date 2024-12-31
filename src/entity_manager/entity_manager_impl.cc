@@ -8,7 +8,7 @@ void EntityManager::addEntity(const std::string& path, SDL_Renderer* renderer, E
         int y = m_SCREEN_HEIGHT - 70;
         int width = 100;
         int height = 20;
-        std::pair<int,int> speed = {30, 0};
+        std::pair<int,int> speed = {2, 0};
         m_Entities.push_back(std::make_unique<Entity>(path, renderer, x, y, width, height, speed, Entity::Type::PLAYER));
     }
     else if(t == Entity::Type::ENEMY) {
@@ -16,7 +16,7 @@ void EntityManager::addEntity(const std::string& path, SDL_Renderer* renderer, E
         int y = 60;
         int width = 100;
         int height = 20;
-        std::pair<int,int> speed = {30, 0};
+        std::pair<int,int> speed = {2, 0};
         m_Entities.push_back(std::make_unique<Entity>(path, renderer, x, y, width, height, speed, Entity::Type::ENEMY));
     }
     else if(t == Entity::Type::BALL) {
@@ -42,6 +42,59 @@ void EntityManager::handleEvent(SDL_Event& event)
         }
         else if(entity->getX() <  0) {
             entity->setX(0);
+        }
+    }
+}
+
+void EntityManager::handleCollison(GameSound* gameSound)
+{
+    for(auto& entity : m_Entities) {
+
+        // Handle Ball - Wall Collision
+        if(entity->getType() == Entity::Type::BALL) {
+            bool playCollisionSound = false;
+
+            // Check for boundary conditions
+            if(entity->getX() > m_SCREEN_WIDTH ) {
+                entity->setVelocity({-entity->getVelocity().first, entity->getVelocity().second});
+            }
+            else if(entity->getX() < 0) {
+                entity->setVelocity({-entity->getVelocity().first, entity->getVelocity().second});
+            }
+            else if(entity->getY() > m_SCREEN_HEIGHT) {
+                entity->setVelocity({entity->getVelocity().first, -entity->getVelocity().second});
+                playCollisionSound = true;
+            }
+            else if(entity->getY() < 0) {
+                entity->setVelocity({entity->getVelocity().first, -entity->getVelocity().second});
+                playCollisionSound = true;
+            }
+
+            if(playCollisionSound) gameSound->playBallWallCollision();
+            continue;
+        }
+
+        // Handle Entity - Ball Collision
+        for(auto& other : m_Entities) {
+            if(entity == other) continue;
+
+            if(entity->getX() < other->getX() + other->getWidth() &&
+               entity->getX() + entity->getWidth() > other->getX() &&
+               entity->getY() < other->getY() + other->getHeight() &&
+               entity->getY() + entity->getHeight() > other->getY()
+            )
+            {
+                // PLAYER and BALL collision
+                if(entity->getType() == Entity::Type::PLAYER && other->getType() == Entity::Type::BALL) {
+                    other->setVelocity({other->getVelocity().first, -other->getVelocity().second});
+                    gameSound->playBallPlayerCollision();
+                }
+                // ENEMY and BALL collision
+                else if(entity->getType() == Entity::Type::ENEMY && other->getType() == Entity::Type::BALL) {
+                    other->setVelocity({other->getVelocity().first, -other->getVelocity().second});
+                    gameSound->playBallPlayerCollision();
+                }
+            }
         }
     }
 }

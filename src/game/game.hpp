@@ -1,0 +1,42 @@
+#ifndef GAME_HPP
+#define GAME_HPP
+
+#include "./entity/entity.hpp"
+
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_render.h>
+#include <memory>
+#include <vector>
+#include <iostream>
+
+
+class Game{
+private:
+    static const int SCREEN_WIDTH = 1280;
+    static const int SCREEN_HEIGHT = 720;
+
+public:
+    Game();
+    ~Game();
+    void init();
+    void run();
+    void quit();
+    void render();
+    void update();
+    void handleEvents();
+    void clean();
+    bool running() { return isRunning; }
+
+    void addEntity(const std::string& path, Entity::Type t);
+
+private:
+    bool isRunning = false;
+    std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> m_Window;
+    std::unique_ptr<SDL_Surface> m_ScreenSurface, m_tmpSurface;
+    std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> m_Renderer;
+
+    // Entities
+    std::vector<std::unique_ptr<Entity>> m_Entities;
+};
+
+#endif // GAME_HPP

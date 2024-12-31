@@ -1,7 +1,7 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include "./entity/entity.hpp"
+#include "../entity_manager/entity_manager.hpp"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_render.h>
@@ -18,6 +18,7 @@ private:
 public:
     Game();
     ~Game();
+
     void init();
     void run();
     void quit();
@@ -27,6 +28,7 @@ public:
     void clean();
     bool running() { return isRunning; }
 
+    // Entity Manager
     void addEntity(const std::string& path, Entity::Type t);
 
 private:
@@ -35,8 +37,11 @@ private:
     std::unique_ptr<SDL_Surface> m_ScreenSurface, m_tmpSurface;
     std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> m_Renderer;
 
-    // Entities
-    std::vector<std::unique_ptr<Entity>> m_Entities;
+    // Background Texture
+    std::unique_ptr<Texture> m_BackgroundTexture;
+
+    // Entitiy Manager
+    std::unique_ptr<EntityManager> m_EntityManager;
 };
 
 #endif // GAME_HPP

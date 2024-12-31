@@ -48,87 +48,75 @@ void Game::init() {
     SDL_RenderClear(m_Renderer.get());
     SDL_RenderPresent(m_Renderer.get());
 
-    // temp
-    m_tmpSurface = std::unique_ptr<SDL_Surface>(SDL_LoadBMP("assets/hello_world.bmp"));
-    if(m_tmpSurface.get() == nullptr) {
-        std::cerr << "Unable to load image! SDL_Error: " << SDL_GetError() << std::endl;
-        return;
-    }
+    // Init Background Texture
+    m_BackgroundTexture = std::make_unique<Texture>("assets/background.bmp", m_Renderer.get(), SCREEN_WIDTH, SCREEN_HEIGHT);
+
+    // Initialize the Entity Manager
+    m_EntityManager = std::make_unique<EntityManager>(SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
 void Game::handleEvents() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
+        // Handle game events here
         if (event.type == SDL_QUIT) {
             isRunning = false;
         }
-        else if(event.type == SDL_KEYDOWN)
-        {
-            switch(event.key.keysym.sym)
-            {
-                case SDLK_LEFT:
-                    m_Entities[0]->setX(m_Entities[0]->getX() - 5);
-                    break;
-                case SDLK_RIGHT:
-                    m_Entities[0]->setX(m_Entities[0]->getX() + 5);
-                    break;
-                case SDLK_a:
-                    m_Entities[1]->setX(m_Entities[1]->getX() - 5);
-                    break;
-                case SDLK_d:
-                    m_Entities[1]->setX(m_Entities[1]->getX() + 5);
-                    break;
-                default:
-                    break;
-            }
-        }
+        // Pass the event to the entity manager
+        m_EntityManager->handleEvent(event);
     }
 }
 
 void Game::update() {
     // Update game logic here
+
+    // Update the position of the ball
+    for(auto& entity: m_EntityManager->m_Entities) {
+        if(entity->getType() == Entity::Type::BALL)
+        {
+            entity->setY(entity->getY() + entity->getSpeed().second * entity->delataTime);
+            entity->setX(entity->getX() + entity->getSpeed().first * entity->delataTime);
+
+            if(entity->getX() > SCREEN_WIDTH) {
+                entity->setSpeed({-entity->getSpeed().first, entity->getSpeed().second});
+            }
+            else if(entity->getX() < 0) {
+                entity->setSpeed({-entity->getSpeed().first, entity->getSpeed().second});
+            }
+
+            if(entity->getY() > SCREEN_HEIGHT) {
+                entity->setSpeed({entity->getSpeed().first, -entity->getSpeed().second});
+            }
+            else if(entity->getY() < 0) {
+                entity->setSpeed({entity->getSpeed().first, -entity->getSpeed().second});
+            }
+        }
+    }
+}
+
+// Add Entity to the Entity Manager
+void Game::addEntity(const std::string& path, Entity::Type t)
+{
+    this->m_EntityManager->addEntity(path, m_Renderer.get(), t);
 }
 
 void Game::render() {
 
     // Clear the screen
-    SDL_SetRenderDrawColor(m_Renderer.get(), 100, 255, 255, 255); // Set background color to white
+    SDL_SetRenderDrawColor(m_Renderer.get(), 255, 255, 255, 255); // Set background color to white
     SDL_RenderClear(m_Renderer.get());
 
+    // Render Background
+    m_BackgroundTexture->render(m_Renderer.get(), 0, 0);
+
     // Draw game objects here
-    for(auto& entity : m_Entities) {
-        entity->render(m_Renderer.get());
-    }
+    m_EntityManager->render(m_Renderer.get());
+
     // Present the rendered frame
     SDL_RenderPresent(m_Renderer.get());
 
-
-    //SDL_BlitSurface(m_tmpSurface.get(), NULL, m_ScreenSurface.get(), NULL);
-    //SDL_UpdateWindowSurface(m_Window.get());
 }
 
-void Game::addEntity(const std::string& path, Entity::Type t)
-{
-    if(t == Entity::Type::PLAYER) {
-        int x = SCREEN_WIDTH / 2 - 25;
-        int y = SCREEN_HEIGHT - 50;
-        int width = 50;
-        int height = 20;
-        int speed = 30;
-        m_Entities.push_back(std::make_unique<Entity>(path, m_Renderer.get(), x, y, width, height, speed, Entity::Type::PLAYER));
-    }
-    else if(t == Entity::Type::ENEMY) {
-        int x = SCREEN_WIDTH / 2 - 25;
-        int y = 50;
-        int width = 50;
-        int height = 20;
-        int speed = 30;
-        m_Entities.push_back(std::make_unique<Entity>(path, m_Renderer.get(), x, y, width, height, speed, Entity::Type::ENEMY));
-    }
-    else if(t == Entity::Type::BALL) {
-        m_Entities.push_back(std::make_unique<Entity>(path, m_Renderer.get(), 0, 0, 50, 50, 5, Entity::Type::BALL));
-    }
-}
 
 void Game::clean() {
     // No need to explicitly destroy gWindow and gRenderer,

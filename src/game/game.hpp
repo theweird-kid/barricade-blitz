@@ -5,7 +5,9 @@
 #include "../sound/sound.hpp"
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_events.h>
 #include <SDL2/SDL_render.h>
+#include <SDL2/SDL_video.h>
 #include <memory>
 #include <vector>
 #include <iostream>
@@ -17,7 +19,8 @@ private:
     static const int SCREEN_HEIGHT = 720;
 
 public:
-    Game();
+
+    Game(SDL_Window* window, SDL_Renderer* renderer);
     ~Game();
 
     void init();
@@ -25,7 +28,7 @@ public:
     void quit();
     void render();
     void update();
-    void handleEvents();
+    void handleEvents(SDL_Event& event);
     void clean();
     bool running() { return isRunning; }
 
@@ -35,8 +38,8 @@ public:
 private:
     bool isRunning = false;
     bool m_toggleMusic = false;
-    std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> m_Window;
-    std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> m_Renderer;
+    SDL_Window* m_Window = nullptr;
+    SDL_Renderer* m_Renderer = nullptr;
 
     // Background Texture
     std::unique_ptr<Texture> m_BackgroundTexture;

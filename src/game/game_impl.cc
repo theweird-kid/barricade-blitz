@@ -6,8 +6,8 @@
 #include <SDL2/SDL_surface.h>
 #include <SDL2/SDL_video.h>
 
-Game::Game(SDL_Window* window, SDL_Renderer* renderer)
-    : m_Window(window), m_Renderer(renderer)
+Game::Game(SDL_Window* window, SDL_Renderer* renderer, GameSound* sound)
+    : m_Window(window), m_Renderer(renderer), m_GameSound(sound)
 {
     init();
 }
@@ -36,15 +36,10 @@ void Game::init() {
     // Initialize the Entity Manager
     m_EntityManager = std::make_unique<EntityManager>(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    // Initialize the Game Sound
-    m_GameSound = std::make_unique<GameSound>();
-
     addEntity("assets/sample.bmp", Entity::Type::PLAYER);
     addEntity("assets/sample.bmp", Entity::Type::ENEMY);
     addEntity("assets/ball.bmp", Entity::Type::BALL);
 
-    // Play the music
-    if(m_GameSound->getMusicStatus()) m_GameSound->playMusic();
 }
 
 void Game::handleEvents(SDL_Event& event) {
@@ -52,9 +47,6 @@ void Game::handleEvents(SDL_Event& event) {
     if(event.type == SDL_KEYDOWN) {
         switch(event.key.keysym.sym)
         {
-            case SDLK_m:
-                m_toggleMusic = true;
-                break;
             default:
                 break;
         }
@@ -66,15 +58,8 @@ void Game::handleEvents(SDL_Event& event) {
 void Game::update() {
     // Update game logic here
 
-    // Update the music status
-    if(m_toggleMusic) {
-        if(m_GameSound->getMusicStatus()) m_GameSound->pauseMusic();
-        else m_GameSound->playMusic();
-        m_toggleMusic = false;
-    }
-
     // handle Collision
-    m_EntityManager->handleCollison(m_GameSound.get());
+    m_EntityManager->handleCollison(m_GameSound);
 }
 
 // Add Entity to the Entity Manager

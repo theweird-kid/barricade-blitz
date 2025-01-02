@@ -20,7 +20,7 @@ private:
 
 public:
 
-    Game(SDL_Window* window, SDL_Renderer* renderer);
+    Game(SDL_Window* window, SDL_Renderer* renderer, GameSound* sound);
     ~Game();
 
     void init();
@@ -37,17 +37,18 @@ public:
 
 private:
     bool isRunning = false;
-    bool m_toggleMusic = false;
-    SDL_Window* m_Window = nullptr;
-    SDL_Renderer* m_Renderer = nullptr;
+
+    // Refrence from Application context
+    SDL_Window* m_Window = nullptr;             // Window
+    SDL_Renderer* m_Renderer = nullptr;         // Renderer
+    GameSound* m_GameSound = nullptr;           // Game Sound
 
     // Background Texture
     std::unique_ptr<Texture> m_BackgroundTexture;
 
     // Entitiy Manager
     std::unique_ptr<EntityManager> m_EntityManager;
-    // Game Sound
-    std::unique_ptr<GameSound> m_GameSound;
+
 };
 
 #endif // GAME_HPP

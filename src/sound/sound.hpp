@@ -23,11 +23,13 @@ public:
 
     void playMusic() {
         Mix_PlayMusic(m_Music.get(), -1);
+        m_MusicStatus = true;
     }
 
     void pauseMusic()
     {
         Mix_PauseMusic();
+        m_MusicStatus = false;
     }
 
     void playBallPlayerCollision() {

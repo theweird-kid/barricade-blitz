@@ -23,9 +23,18 @@ public:
     Screen()
         : m_Window(nullptr, SDL_DestroyWindow), m_Renderer(nullptr, SDL_DestroyRenderer), m_Game(nullptr)
     {
+        // Init global Application Context
         init();
-        m_Game = std::unique_ptr<Game>(new Game(m_Window.get(), m_Renderer.get()));
+
+        // Initialize the Game Sound
+        m_GameSound = std::make_unique<GameSound>();
+
+        // Init Game object
+        m_Game = std::make_unique<Game>(m_Window.get(), m_Renderer.get(), m_GameSound.get());
         m_Game->init();
+
+        // Play the music
+        if(m_GameSound->getMusicStatus()) m_GameSound->playMusic();
     }
 
     // Destructor
@@ -39,7 +48,7 @@ public:
     void run()
     {
         m_isRunning = true;
-        m_isGameRunning = true;
+        m_isGameRunning = false;
         while (m_isRunning) {
             handleEvents();
             update();
@@ -87,32 +96,60 @@ private:
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             // Handle In Game events
-            m_Game->handleEvents(event);
+            if(m_isGameRunning) m_Game->handleEvents(event);
 
             // Handle screen events here
-            if (event.type == SDL_QUIT) {
-                m_isRunning = false;
-            }
             if(event.type == SDL_KEYDOWN) {
                 switch(event.key.keysym.sym)
                 {
-                    case SDLK_ESCAPE:
+                    case SDLK_ESCAPE:                   // Quit
                         m_isRunning = false;
                         break;
+                    case SDLK_g:                        // Start Game
+                        toggle_runGame = true;
+                        break;
+                    case SDLK_m:
+                        toggle_musicStatus = true;
                     default:
                         break;
                 }
+            }
+            if (event.type == SDL_QUIT) {
+                m_isRunning = false;
             }
         }
     }
 
     void update()
     {
+
+        // Toggle Game Status
+        if(toggle_runGame) {
+            m_isGameRunning = true;
+
+            // reset toggle status
+            toggle_runGame = false;
+        }
+
+        // Toggle Music Status
+        if(toggle_musicStatus)
+        {
+            if(m_GameSound->getMusicStatus())
+                m_GameSound->pauseMusic();
+            else
+                m_GameSound->playMusic();
+
+            // reset toggle state
+            toggle_musicStatus = false;
+        }
+
+        // Update Game status
         if(m_isGameRunning) m_Game->update();
     }
 
     void render()
     {
+        // Render game
         if(m_isGameRunning) m_Game->render();
     }
 
@@ -124,15 +161,22 @@ private:
 
     // Game Object
     std::unique_ptr<Game> m_Game;
-    // Game Mode
-    Screen::GameMode m_GameMode;
     // Hud Object
     std::unique_ptr<Hud> m_Hud;
+    // Game Sound Object
+    std::unique_ptr<GameSound> m_GameSound;
+
+    // Game Mode
+    Screen::GameMode m_GameMode;
 
     // Status
     bool m_isRunning = false;
     bool m_isGameRunning = false;
-    bool m_toggleMusic = false;
+    bool m_isMusicRunning = false;
+
+    // toggle states
+    bool toggle_runGame = false;
+    bool toggle_musicStatus = false;
 };
 
 #endif // SCREEN_HPP

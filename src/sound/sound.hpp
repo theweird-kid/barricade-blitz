@@ -4,9 +4,9 @@
 #include <memory>
 #include <SDL2/SDL_mixer.h>
 
-class GameSound {
+class Sound {
 public:
-    GameSound()
+    Sound()
     : m_Music(nullptr, Mix_FreeMusic),
       mBallPlayerCollision(nullptr, Mix_FreeChunk),
       mBallWallCollision(nullptr, Mix_FreeChunk)

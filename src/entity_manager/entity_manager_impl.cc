@@ -46,31 +46,43 @@ void EntityManager::handleEvent(SDL_Event& event)
     }
 }
 
-void EntityManager::handleCollison(GameSound* gameSound)
+void EntityManager::handleCollison(Sound* gameSound, bool& updateScore)
 {
     for(auto& entity : m_Entities) {
 
         // Handle Ball - Wall Collision
         if(entity->getType() == Entity::Type::BALL) {
-            bool playCollisionSound = false;
+            bool playWallCollisionSound = false;
 
             // Check for boundary conditions
-            if(entity->getX() > m_SCREEN_WIDTH ) {
+            if(entity->getX() > m_SCREEN_WIDTH )
+            {
                 entity->setVelocity({-entity->getVelocity().first, entity->getVelocity().second});
             }
-            else if(entity->getX() < 0) {
+            else if(entity->getX() < 0)
+            {
                 entity->setVelocity({-entity->getVelocity().first, entity->getVelocity().second});
             }
-            else if(entity->getY() > m_SCREEN_HEIGHT) {
+            else if(entity->getY() > m_SCREEN_HEIGHT)
+            {
                 entity->setVelocity({entity->getVelocity().first, -entity->getVelocity().second});
-                playCollisionSound = true;
+
+                // Set Ball - Wall Collision Flag
+                playWallCollisionSound = true;
+                // Increase Enemy Score
+                m_EnemyScore += 1;  updateScore = true;
             }
-            else if(entity->getY() < 0) {
+            else if(entity->getY() < 0)
+            {
                 entity->setVelocity({entity->getVelocity().first, -entity->getVelocity().second});
-                playCollisionSound = true;
+
+                // Set Ball - Wall Collission Flag
+                playWallCollisionSound = true;
+                // Increase Player Score
+                m_PlayerScore += 1; updateScore = true;
             }
 
-            if(playCollisionSound) gameSound->playBallWallCollision();
+            if(playWallCollisionSound) gameSound->playBallWallCollision();
             continue;
         }
 

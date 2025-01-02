@@ -2,7 +2,7 @@
 #define SCREEN_HPP
 
 #include "../game/game.hpp"
-#include "../hud/hud.hpp"
+#include "../menu/menu.hpp"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_keycode.h>
@@ -10,14 +10,11 @@
 
 class Screen
 {
-public:
+private:
     static const int SCREEN_WIDTH = 1280;
     static const int SCREEN_HEIGHT = 720;
+
 public:
-    enum class GameMode {
-        OFFLINE,
-        ONLINE
-    };
 
     // Constructor
     Screen()
@@ -26,8 +23,11 @@ public:
         // Init global Application Context
         init();
 
-        // Initialize the Game Sound
-        m_GameSound = std::make_unique<GameSound>();
+        // Initialize the Sound Object
+        m_GameSound = std::make_unique<Sound>();
+
+        // Initialize the Menu Object
+        m_Menu = std::make_unique<Menu>(m_Window.get(), m_Renderer.get());
 
         // Init Game object
         m_Game = std::make_unique<Game>(m_Window.get(), m_Renderer.get(), m_GameSound.get());
@@ -98,6 +98,9 @@ private:
             // Handle In Game events
             if(m_isGameRunning) m_Game->handleEvents(event);
 
+            // Handle Menu events
+            else m_Menu->handleEvents(event);
+
             // Handle screen events here
             if(event.type == SDL_KEYDOWN) {
                 switch(event.key.keysym.sym)
@@ -105,10 +108,10 @@ private:
                     case SDLK_ESCAPE:                   // Quit
                         m_isRunning = false;
                         break;
-                    case SDLK_g:                        // Start Game
+                    case SDLK_g:                        // Start/Stop Game
                         toggle_runGame = true;
                         break;
-                    case SDLK_m:
+                    case SDLK_m:                        // Play/Pause Music
                         toggle_musicStatus = true;
                     default:
                         break;
@@ -122,10 +125,9 @@ private:
 
     void update()
     {
-
         // Toggle Game Status
         if(toggle_runGame) {
-            m_isGameRunning = true;
+            m_isGameRunning = !(m_isGameRunning);
 
             // reset toggle status
             toggle_runGame = false;
@@ -145,12 +147,15 @@ private:
 
         // Update Game status
         if(m_isGameRunning) m_Game->update();
+        else m_Menu->update();
     }
 
     void render()
     {
         // Render game
         if(m_isGameRunning) m_Game->render();
+        // Render Main Menu
+        else m_Menu->render();
     }
 
 private:
@@ -159,15 +164,14 @@ private:
     // SDL Renderer Instance
     std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> m_Renderer;
 
+    // Menu Object
+    std::unique_ptr<Menu> m_Menu;
     // Game Object
     std::unique_ptr<Game> m_Game;
-    // Hud Object
-    std::unique_ptr<Hud> m_Hud;
-    // Game Sound Object
-    std::unique_ptr<GameSound> m_GameSound;
 
-    // Game Mode
-    Screen::GameMode m_GameMode;
+    // Game Sound Object
+    std::unique_ptr<Sound> m_GameSound;
+
 
     // Status
     bool m_isRunning = false;

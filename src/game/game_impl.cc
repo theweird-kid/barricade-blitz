@@ -5,8 +5,9 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_surface.h>
 #include <SDL2/SDL_video.h>
+#include <memory>
 
-Game::Game(SDL_Window* window, SDL_Renderer* renderer, GameSound* sound)
+Game::Game(SDL_Window* window, SDL_Renderer* renderer, Sound* sound)
     : m_Window(window), m_Renderer(renderer), m_GameSound(sound)
 {
     init();
@@ -34,7 +35,10 @@ void Game::init() {
     m_BackgroundTexture = std::make_unique<Texture>("assets/background.bmp", m_Renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     // Initialize the Entity Manager
-    m_EntityManager = std::make_unique<EntityManager>(SCREEN_WIDTH, SCREEN_HEIGHT);
+    m_EntityManager = std::make_unique<EntityManager>(SCREEN_WIDTH, SCREEN_HEIGHT, playerScore, enemyScore);
+
+    // Initialize the HUD
+    m_Hud = std::make_unique<Hud>(m_Renderer, playerScore, enemyScore);
 
     addEntity("assets/sample.bmp", Entity::Type::PLAYER);
     addEntity("assets/sample.bmp", Entity::Type::ENEMY);
@@ -59,7 +63,14 @@ void Game::update() {
     // Update game logic here
 
     // handle Collision
-    m_EntityManager->handleCollison(m_GameSound);
+    m_EntityManager->handleCollison(m_GameSound, updateScore);
+
+    // Update Huds
+    if(updateScore)
+    {
+        m_Hud->update(); updateScore = false;
+        std::cout << "PLAYER: " << playerScore << "\tENEMY: " << enemyScore << std::endl;
+    }
 }
 
 // Add Entity to the Entity Manager
@@ -79,6 +90,9 @@ void Game::render() {
 
     // Draw game objects here
     m_EntityManager->render(m_Renderer);
+
+    // Draw HUD
+    m_Hud->render(m_Renderer);
 
     // Present the rendered frame
     SDL_RenderPresent(m_Renderer);

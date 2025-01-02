@@ -2,6 +2,7 @@
 #define GAME_HPP
 
 #include "../entity_manager/entity_manager.hpp"
+#include "../hud/hud.hpp"
 #include "../sound/sound.hpp"
 
 #include <SDL2/SDL.h>
@@ -20,7 +21,13 @@ private:
 
 public:
 
-    Game(SDL_Window* window, SDL_Renderer* renderer, GameSound* sound);
+    // GAME MODE TYPE
+    enum class GameMode {
+        OFFLINE,
+        ONLINE
+    };
+
+    Game(SDL_Window* window, SDL_Renderer* renderer, Sound* sound);
     ~Game();
 
     void init();
@@ -37,17 +44,28 @@ public:
 
 private:
     bool isRunning = false;
+    bool updateScore = false;
 
     // Refrence from Application context
     SDL_Window* m_Window = nullptr;             // Window
     SDL_Renderer* m_Renderer = nullptr;         // Renderer
-    GameSound* m_GameSound = nullptr;           // Game Sound
+    Sound* m_GameSound = nullptr;           // Game Sound
+
+    // Hud Object
+    std::unique_ptr<Hud> m_Hud;
 
     // Background Texture
     std::unique_ptr<Texture> m_BackgroundTexture;
 
     // Entitiy Manager
     std::unique_ptr<EntityManager> m_EntityManager;
+
+    // Game Mode
+    GameMode m_GameMode;
+
+    // Player - Enemy Scores
+    int playerScore = 0;
+    int enemyScore = 0;
 
 };
 

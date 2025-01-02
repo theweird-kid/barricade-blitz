@@ -10,12 +10,12 @@
 
 class EntityManager {
 public:
-    EntityManager(int s_width, int s_height)
-    : m_SCREEN_WIDTH(s_width), m_SCREEN_HEIGHT(s_height)
+    EntityManager(int s_width, int s_height, int& playerScore, int& enemyScore)
+    : m_SCREEN_WIDTH(s_width), m_SCREEN_HEIGHT(s_height), m_PlayerScore(playerScore), m_EnemyScore(enemyScore)
     {}
     void addEntity(const std::string& path, SDL_Renderer* renderer, Entity::Type t);
     void handleEvent(SDL_Event& event);
-    void handleCollison(GameSound* gameSound);
+    void handleCollison(Sound* gameSound, bool&);
     void render(SDL_Renderer* renderer);
 
     // Entities
@@ -23,8 +23,8 @@ public:
 
 private:
 
-    int m_PlayerScore = 0;
-    int m_EnemyScore = 0;
+    int& m_PlayerScore;
+    int& m_EnemyScore;
 
     int m_SCREEN_WIDTH = 1280;
     int m_SCREEN_HEIGHT = 720;

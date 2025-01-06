@@ -1,0 +1,192 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-O2",
+      "-I/usr/include/SDL2",
+      "-Iinclude/imgui",
+      "-o",
+      "bin/main",
+      "src/main.cc"
+    ],
+    "directory": "/home/gaurav/c/Programming/cpp/barricade-blitz",
+    "file": "/home/gaurav/c/Programming/cpp/barricade-blitz/src/main.cc",
+    "output": "/home/gaurav/c/Programming/cpp/barricade-blitz/bin/main"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-O2",
+      "-I/usr/include/SDL2",
+      "-Iinclude/imgui",
+      "-o",
+      "bin/main",
+      "src/entity/entity_impl.cc"
+    ],
+    "directory": "/home/gaurav/c/Programming/cpp/barricade-blitz",
+    "file": "/home/gaurav/c/Programming/cpp/barricade-blitz/src/entity/entity_impl.cc",
+    "output": "/home/gaurav/c/Programming/cpp/barricade-blitz/bin/main"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-O2",
+      "-I/usr/include/SDL2",
+      "-Iinclude/imgui",
+      "-o",
+      "bin/main",
+      "src/entity_manager/entity_manager_impl.cc"
+    ],
+    "directory": "/home/gaurav/c/Programming/cpp/barricade-blitz",
+    "file": "/home/gaurav/c/Programming/cpp/barricade-blitz/src/entity_manager/entity_manager_impl.cc",
+    "output": "/home/gaurav/c/Programming/cpp/barricade-blitz/bin/main"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-O2",
+      "-I/usr/include/SDL2",
+      "-Iinclude/imgui",
+      "-o",
+      "bin/main",
+      "src/game/game_impl.cc"
+    ],
+    "directory": "/home/gaurav/c/Programming/cpp/barricade-blitz",
+    "file": "/home/gaurav/c/Programming/cpp/barricade-blitz/src/game/game_impl.cc",
+    "output": "/home/gaurav/c/Programming/cpp/barricade-blitz/bin/main"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-O2",
+      "-I/usr/include/SDL2",
+      "-Iinclude/imgui",
+      "-o",
+      "bin/main",
+      "imgui/imgui.cpp"
+    ],
+    "directory": "/home/gaurav/c/Programming/cpp/barricade-blitz",
+    "file": "/home/gaurav/c/Programming/cpp/barricade-blitz/imgui/imgui.cpp",
+    "output": "/home/gaurav/c/Programming/cpp/barricade-blitz/bin/main"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-O2",
+      "-I/usr/include/SDL2",
+      "-Iinclude/imgui",
+      "-o",
+      "bin/main",
+      "imgui/imgui_draw.cpp"
+    ],
+    "directory": "/home/gaurav/c/Programming/cpp/barricade-blitz",
+    "file": "/home/gaurav/c/Programming/cpp/barricade-blitz/imgui/imgui_draw.cpp",
+    "output": "/home/gaurav/c/Programming/cpp/barricade-blitz/bin/main"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-O2",
+      "-I/usr/include/SDL2",
+      "-Iinclude/imgui",
+      "-o",
+      "bin/main",
+      "imgui/imgui_tables.cpp"
+    ],
+    "directory": "/home/gaurav/c/Programming/cpp/barricade-blitz",
+    "file": "/home/gaurav/c/Programming/cpp/barricade-blitz/imgui/imgui_tables.cpp",
+    "output": "/home/gaurav/c/Programming/cpp/barricade-blitz/bin/main"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-O2",
+      "-I/usr/include/SDL2",
+      "-Iinclude/imgui",
+      "-o",
+      "bin/main",
+      "imgui/imgui_widgets.cpp"
+    ],
+    "directory": "/home/gaurav/c/Programming/cpp/barricade-blitz",
+    "file": "/home/gaurav/c/Programming/cpp/barricade-blitz/imgui/imgui_widgets.cpp",
+    "output": "/home/gaurav/c/Programming/cpp/barricade-blitz/bin/main"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-O2",
+      "-I/usr/include/SDL2",
+      "-Iinclude/imgui",
+      "-o",
+      "bin/main",
+      "imgui/imgui_impl_sdl2.cpp"
+    ],
+    "directory": "/home/gaurav/c/Programming/cpp/barricade-blitz",
+    "file": "/home/gaurav/c/Programming/cpp/barricade-blitz/imgui/imgui_impl_sdl2.cpp",
+    "output": "/home/gaurav/c/Programming/cpp/barricade-blitz/bin/main"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-O2",
+      "-I/usr/include/SDL2",
+      "-Iinclude/imgui",
+      "-o",
+      "bin/main",
+      "imgui/imgui_impl_sdlrenderer2.cpp"
+    ],
+    "directory": "/home/gaurav/c/Programming/cpp/barricade-blitz",
+    "file": "/home/gaurav/c/Programming/cpp/barricade-blitz/imgui/imgui_impl_sdlrenderer2.cpp",
+    "output": "/home/gaurav/c/Programming/cpp/barricade-blitz/bin/main"
+  }
+]

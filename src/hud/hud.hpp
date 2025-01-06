@@ -1,11 +1,12 @@
 #ifndef HUD_HPP
 #define HUD_HPP
 
-#include "../texture.hpp"
+#include <imgui.h>
+#include <imgui_impl_sdl2.h>
+#include <imgui_impl_sdlrenderer2.h>
 
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_ttf.h>
-#include <memory>
 
 class Hud
 {
@@ -15,54 +16,52 @@ public:
     : m_Renderer(renderer),
     playerScore(player), enemyScore(enemy)
     {
-        // Initialize TTF
-        if(TTF_Init() == -1)
-        {
-            std::cerr << "[ERROR]: TTF_Init() Failed! SDL_ttf Error: " << TTF_GetError() << std::endl;
-        }
 
-        // Create Texture
-        createTexture();
+
     }
 
     void update()
     {
-        // Create text surfaces for player and enemy scores
-        std::string newPlayerScoreStr = "Player: " + std::to_string(playerScore);
-        std::string newEnemyScoreStr = "Enemy: " + std::to_string(enemyScore);
 
-        playerScoreTexture->updateText(newPlayerScoreStr);
-        enemyScoreTexture->updateText(newEnemyScoreStr);
     }
 
-    void render(SDL_Renderer* renderer)
+    void render(float& deltaTime)
     {
-        playerScoreTexture->render(renderer, 10, 0);
-        enemyScoreTexture->render(renderer, 1150, 0);
+        ImGui_ImplSDLRenderer2_NewFrame();
+        ImGui_ImplSDL2_NewFrame();
+        ImGui::NewFrame();
+
+        // Create an ImGui window
+        ImGui::Begin("Score");
+
+        /*
+        // Calculate and display FPS
+        float fps = 1.0f / deltaTime;
+        ImGui::Text("FPS: %.2f", fps);
+        */
+        // Display scores using ImGui::Text()
+        ImGui::Text("Player Score: %d", playerScore);
+        ImGui::Text("Enemy Score: %d", enemyScore);
+
+        ImGui::End();
+
+
+        // Render ImGui
+        ImGui::Render();
+        ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), m_Renderer);
     }
 
 private:
-    void createTexture()
-    {
-        // Create text surfaces for player and enemy scores
-        std::string playerScoreStr = "Player: " + std::to_string(playerScore);
-        std::string enemyScoreStr = "Enemy: " + std::to_string(enemyScore);
-
-        playerScoreTexture = std::make_unique<Texture>(playerScoreStr, m_Renderer);
-        enemyScoreTexture = std::make_unique<Texture>(enemyScoreStr, m_Renderer);
-    }
 
 private:
+    // Refrence to Renderer
+    SDL_Renderer* m_Renderer = nullptr;
+
     // References to player - enemy scores
     int& playerScore;
     int& enemyScore;
 
-    // Refrence to Renderer
-    SDL_Renderer* m_Renderer = nullptr;
-
     // Score Textures
-    std::unique_ptr<Texture> playerScoreTexture;
-    std::unique_ptr<Texture> enemyScoreTexture;
 
 };
 

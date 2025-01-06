@@ -18,17 +18,6 @@ Game::~Game() {
     SDL_Quit();
 }
 
-/*
-void Game::run() {
-    isRunning = true;
-    while (isRunning) {
-        handleEvents();
-        update();
-        render();
-    }
-}
-*/
-
 void Game::init() {
 
     // Init Background Texture
@@ -68,7 +57,8 @@ void Game::update() {
     // Update Huds
     if(updateScore)
     {
-        m_Hud->update(); updateScore = false;
+        //m_Hud->update();
+        updateScore = false;
         std::cout << "PLAYER: " << playerScore << "\tENEMY: " << enemyScore << std::endl;
     }
 }
@@ -79,7 +69,7 @@ void Game::addEntity(const std::string& path, Entity::Type t)
     this->m_EntityManager->addEntity(path, m_Renderer, t);
 }
 
-void Game::render() {
+void Game::render(float& deltaTime) {
 
     // Clear the screen
     SDL_SetRenderDrawColor(m_Renderer, 255, 255, 255, 255); // Set background color to white
@@ -92,7 +82,7 @@ void Game::render() {
     m_EntityManager->render(m_Renderer);
 
     // Draw HUD
-    m_Hud->render(m_Renderer);
+    m_Hud->render(deltaTime);
 
     // Present the rendered frame
     SDL_RenderPresent(m_Renderer);

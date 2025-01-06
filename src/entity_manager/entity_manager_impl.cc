@@ -3,6 +3,7 @@
 
 void EntityManager::addEntity(const std::string& path, SDL_Renderer* renderer, Entity::Type t)
 {
+    // CREATE PLAYER
     if(t == Entity::Type::PLAYER) {
         int x = m_SCREEN_WIDTH / 2 - 25;
         int y = m_SCREEN_HEIGHT - 70;
@@ -11,6 +12,7 @@ void EntityManager::addEntity(const std::string& path, SDL_Renderer* renderer, E
         std::pair<int,int> speed = {2, 0};
         m_Entities.push_back(std::make_unique<Entity>(path, renderer, x, y, width, height, speed, Entity::Type::PLAYER));
     }
+    // CREATE ENEMY
     else if(t == Entity::Type::ENEMY) {
         int x = m_SCREEN_WIDTH / 2 - 25;
         int y = 60;
@@ -19,6 +21,7 @@ void EntityManager::addEntity(const std::string& path, SDL_Renderer* renderer, E
         std::pair<int,int> speed = {2, 0};
         m_Entities.push_back(std::make_unique<Entity>(path, renderer, x, y, width, height, speed, Entity::Type::ENEMY));
     }
+    // CREATE BALL
     else if(t == Entity::Type::BALL) {
         int x = m_SCREEN_WIDTH / 2;
         int y = m_SCREEN_HEIGHT / 2;
@@ -34,9 +37,9 @@ void EntityManager::handleEvent(SDL_Event& event)
     for(auto& entity : m_Entities) {
         entity->handleEvent(event);
 
-        // Check for boundary conditions
         if(entity->getType() == Entity::Type::BALL) continue;
 
+        // Check for boundary conditions of player and enemy
         if(entity->getX() > m_SCREEN_WIDTH - entity->getWidth()) {
             entity->setX(m_SCREEN_WIDTH - entity->getWidth());
         }
@@ -113,6 +116,7 @@ void EntityManager::handleCollison(Sound* gameSound, bool& updateScore)
 
 void EntityManager::render(SDL_Renderer* renderer)
 {
+    // Render all entities to the screen
     for(auto& entity : m_Entities) {
         entity->render(renderer);
     }

@@ -1,12 +1,19 @@
 #ifndef SCREEN_HPP
 #define SCREEN_HPP
 
+// Include ImGui
+#include <imgui.h>
+#include <imgui_impl_sdl2.h>
+#include <imgui_impl_sdlrenderer2.h>
+
+#include "../sound/sound.hpp"
 #include "../game/game.hpp"
 #include "../menu/menu.hpp"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_keycode.h>
 #include <memory>
+#include <chrono>
 
 class Screen
 {
@@ -38,7 +45,15 @@ public:
     }
 
     // Destructor
-    ~Screen() {}
+    ~Screen()
+    {
+        // Clean up
+        ImGui_ImplSDLRenderer2_Shutdown();
+        ImGui_ImplSDL2_Shutdown();
+        ImGui::DestroyContext();
+        Mix_Quit();
+        SDL_Quit();
+    }
 
     void playGame()
     {
@@ -51,6 +66,12 @@ public:
         m_isGameRunning = false;
         while (m_isRunning) {
             handleEvents();
+
+            // Calculate delta Time
+            auto currentTime = std::chrono::high_resolution_clock::now();
+            deltaTime = std::chrono::duration_cast<std::chrono::duration<float>>(currentTime - m_LastFrameTime).count();
+            m_LastFrameTime = currentTime;
+
             update();
             render();
         }
@@ -86,6 +107,15 @@ private:
             return;
         }
 
+        // Init ImGui
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+        ImGui_ImplSDL2_InitForSDLRenderer(m_Window.get(), m_Renderer.get());
+        ImGui_ImplSDLRenderer2_Init(m_Renderer.get());
+
+        // Set background color
         SDL_SetRenderDrawColor(m_Renderer.get(), 255, 255, 255, 255); // Set background color to white
         SDL_RenderClear(m_Renderer.get());
         SDL_RenderPresent(m_Renderer.get());
@@ -153,9 +183,10 @@ private:
     void render()
     {
         // Render game
-        if(m_isGameRunning) m_Game->render();
+        if(m_isGameRunning) m_Game->render(deltaTime);
         // Render Main Menu
         else m_Menu->render();
+
     }
 
 private:
@@ -172,15 +203,19 @@ private:
     // Game Sound Object
     std::unique_ptr<Sound> m_GameSound;
 
+    // Delta Time
+    float deltaTime = 0.0f;
 
     // Status
     bool m_isRunning = false;
     bool m_isGameRunning = false;
-    bool m_isMusicRunning = false;
 
     // toggle states
     bool toggle_runGame = false;
     bool toggle_musicStatus = false;
+
+    // For FPS calculation
+    std::chrono::high_resolution_clock::time_point m_LastFrameTime;
 };
 
 #endif // SCREEN_HPP

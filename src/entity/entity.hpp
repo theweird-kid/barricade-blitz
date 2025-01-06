@@ -65,6 +65,7 @@ public:
 private:
 
     std::unique_ptr<Texture> m_Texture;
+
     enum Type m_Type;
     int m_Xpos, m_Ypos;
     int m_Xvel, m_Yvel;

@@ -2,9 +2,9 @@
 #define MENU_HPP
 
 #include "../texture.hpp"
-#include "../sound/sound.hpp"
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_render.h>
+#include <memory>
 
 class Menu
 {
@@ -18,6 +18,8 @@ public:
     {
         // Init Background Texture
         m_MenuTexture = std::make_unique<Texture>("assets/main_menu.bmp", m_Renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+        m_LogoTexture = std::make_unique<Texture>("assets/barricade-blitz.bmp", m_Renderer, (SCREEN_WIDTH/10)*6, (SCREEN_HEIGHT/10)*6);
 
     }
 
@@ -39,6 +41,7 @@ public:
 
         // Render Background
         m_MenuTexture->render(m_Renderer, 0, 0);
+        m_LogoTexture->render(m_Renderer, 2*(SCREEN_WIDTH/10), 1);
 
         // Present the rendered frame
         SDL_RenderPresent(m_Renderer);
@@ -52,6 +55,7 @@ private:
 
     // Main Menu Texture
     std::unique_ptr<Texture> m_MenuTexture;
+    std::unique_ptr<Texture> m_LogoTexture;
 };
 
 #endif // MENU_HPP

@@ -2,6 +2,7 @@
 #define GAME_HPP
 
 #include "../entity_manager/entity_manager.hpp"
+#include "../entity/entity.hpp"
 #include "../hud/hud.hpp"
 #include "../sound/sound.hpp"
 
@@ -33,7 +34,7 @@ public:
     void init();
     void run();
     void quit();
-    void render();
+    void render(float& deltaTime);
     void update();
     void handleEvents(SDL_Event& event);
     void clean();

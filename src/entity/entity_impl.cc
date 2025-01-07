@@ -68,6 +68,21 @@ void Entity::handleEvent(SDL_Event& event)
     }
 }
 
+void Entity::reset()
+{
+    if(m_Type == Entity::Type::PLAYER) {
+        m_Xpos = m_SCREEN_WIDTH / 2 - 25;
+        m_Ypos = m_SCREEN_HEIGHT - 70;
+    }
+    else if(m_Type == Entity::Type::ENEMY) {
+        m_Xpos = m_SCREEN_WIDTH / 2 - 25;
+        m_Ypos = 60;
+    }
+    else if(m_Type == Entity::Type::BALL) {
+        m_Xpos = m_SCREEN_WIDTH/2;
+        m_Ypos = m_SCREEN_HEIGHT/2;
+    }
+}
 
 void Entity::update()
 {

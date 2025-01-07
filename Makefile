@@ -1,6 +1,6 @@
 CXX=g++
 CXXFLAGS=-std=c++20 -Wall -Wextra -g -O2 -I/usr/include/SDL2 -Iinclude/imgui
-LDFLAGS=-lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
+LDFLAGS=-lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lenet
 
 SRCDIR := src
 BINDIR := bin

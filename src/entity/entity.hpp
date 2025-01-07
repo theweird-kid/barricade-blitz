@@ -10,8 +10,10 @@
 #include <iostream>
 
 class Entity {
+private:
+    static const int m_SCREEN_WIDTH = 1280;
+    static const int m_SCREEN_HEIGHT = 720;
 public:
-
     // Entity Type
     enum class Type {
         PLAYER,
@@ -39,6 +41,8 @@ public:
     void handleEvent(SDL_Event& event);
     void update();
     void render(SDL_Renderer* renderer);
+
+    void reset();
 
     // delta time
     float delataTime = 1.0f;

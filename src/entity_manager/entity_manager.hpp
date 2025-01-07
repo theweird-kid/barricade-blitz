@@ -18,8 +18,11 @@ public:
     void handleCollison(Sound* gameSound, bool&);
     void render(SDL_Renderer* renderer);
 
+    void reset();
+
     // Entities
     std::vector<std::unique_ptr<Entity>> m_Entities;
+
 
 private:
 

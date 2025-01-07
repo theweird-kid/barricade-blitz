@@ -114,6 +114,13 @@ void EntityManager::handleCollison(Sound* gameSound, bool& updateScore)
     }
 }
 
+void EntityManager::reset()
+{
+    for(auto& entity : m_Entities) {
+        entity.reset();
+    }
+}
+
 void EntityManager::render(SDL_Renderer* renderer)
 {
     // Render all entities to the screen

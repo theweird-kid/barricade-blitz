@@ -5,6 +5,7 @@
 #include "../entity/entity.hpp"
 #include "../hud/hud.hpp"
 #include "../sound/sound.hpp"
+#include "../net/net_client.hpp"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_events.h>
@@ -38,13 +39,16 @@ public:
     void update();
     void handleEvents(SDL_Event& event);
     void clean();
-    bool running() { return isRunning; }
+    bool running() { return isGameRunning; }
+
+    void setRunning(bool flag) { isGameRunning = flag; }
+    void resetGame();
 
     // Entity Manager
     void addEntity(const std::string& path, Entity::Type t);
 
 private:
-    bool isRunning = false;
+    bool isGameRunning = false;
     bool updateScore = false;
 
     // Refrence from Application context
@@ -67,6 +71,9 @@ private:
     // Player - Enemy Scores
     int playerScore = 0;
     int enemyScore = 0;
+
+    // Network Client
+    std::unique_ptr<net::Client> m_Client;
 
 };
 

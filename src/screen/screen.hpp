@@ -63,7 +63,7 @@ public:
     void run()
     {
         m_isRunning = true;
-        m_isGameRunning = false;
+        m_Game->setRunning(false);
         while (m_isRunning) {
             handleEvents();
 
@@ -126,7 +126,7 @@ private:
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             // Handle In Game events
-            if(m_isGameRunning) m_Game->handleEvents(event);
+            if(m_Game->running()) m_Game->handleEvents(event);
 
             // Handle Menu events
             else m_Menu->handleEvents(event);
@@ -157,7 +157,7 @@ private:
     {
         // Toggle Game Status
         if(toggle_runGame) {
-            m_isGameRunning = !(m_isGameRunning);
+            m_Game->setRunning(!m_Game->running());
 
             // reset toggle status
             toggle_runGame = false;
@@ -176,14 +176,14 @@ private:
         }
 
         // Update Game status
-        if(m_isGameRunning) m_Game->update();
+        if(m_Game->running()) m_Game->update();
         else m_Menu->update();
     }
 
     void render()
     {
         // Render game
-        if(m_isGameRunning) m_Game->render(deltaTime);
+        if(m_Game->running()) m_Game->render(deltaTime);
         // Render Main Menu
         else m_Menu->render();
 
@@ -208,7 +208,6 @@ private:
 
     // Status
     bool m_isRunning = false;
-    bool m_isGameRunning = false;
 
     // toggle states
     bool toggle_runGame = false;

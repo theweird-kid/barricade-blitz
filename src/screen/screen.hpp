@@ -2,9 +2,9 @@
 #define SCREEN_HPP
 
 // Include ImGui
-#include <imgui.h>
-#include <imgui_impl_sdl2.h>
-#include <imgui_impl_sdlrenderer2.h>
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_sdl2.h>
+#include <imgui/imgui_impl_sdlrenderer2.h>
 
 #include "../sound/sound.hpp"
 #include "../game/game.hpp"

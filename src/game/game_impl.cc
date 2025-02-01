@@ -11,7 +11,7 @@ Game::Game(SDL_Window* window, SDL_Renderer* renderer, Sound* sound)
     : m_Window(window), m_Renderer(renderer), m_GameSound(sound)
 {
     init();
-    m_GameMode = GameMode::ONLINE;
+    m_GameMode = GameMode::OFFLINE;
 }
 
 Game::~Game() {
@@ -33,16 +33,6 @@ void Game::init() {
     addEntity("assets/sample.bmp", Entity::Type::PLAYER);
     addEntity("assets/sample.bmp", Entity::Type::ENEMY);
     addEntity("assets/ball.bmp", Entity::Type::BALL);
-
-    // Initialize the client and connect to the server
-    m_Client = std::make_unique<net::Client>();
-    if(!m_Client->connect("127.0.0.1", 7777)) {
-        std::cerr << "Failed to connect to the server\n";
-    }
-    else {
-        // Run the client in separate thread
-        std::thread(&net::Client::run, m_Client.get()).detach();
-    }
 
 }
 
@@ -72,22 +62,8 @@ void Game::update() {
         updateScore = false;
         std::cout << "PLAYER: " << playerScore << "\tENEMY: " << enemyScore << std::endl;
         if(playerScore == 5 || enemyScore == 5) {
-            resetGame();
+            //resetGame();
         }
-    }
-
-    // Send the game state to the server
-    if(m_GameMode == GameMode::ONLINE)
-    {
-        net::MessageClient msg;
-        msg.x_player_position = m_EntityManager->m_Entities[0]->getX();
-        msg.y_player_position = m_EntityManager->m_Entities[0]->getY();
-        msg.x_player_velocity = m_EntityManager->m_Entities[0]->getVelocity().first;
-        msg.y_player_velocity = m_EntityManager->m_Entities[0]->getVelocity().second;
-        msg.PlayerScore = playerScore;
-        msg.EnemyScore = enemyScore;
-
-        m_Client->sendMessage(msg);
     }
 }
 

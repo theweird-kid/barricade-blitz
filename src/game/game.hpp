@@ -5,7 +5,6 @@
 #include "../entity/entity.hpp"
 #include "../hud/hud.hpp"
 #include "../sound/sound.hpp"
-#include "../net/net_client.hpp"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_events.h>
@@ -71,9 +70,6 @@ private:
     // Player - Enemy Scores
     int playerScore = 0;
     int enemyScore = 0;
-
-    // Network Client
-    std::unique_ptr<net::Client> m_Client;
 
 };
 

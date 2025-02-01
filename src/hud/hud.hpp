@@ -1,9 +1,9 @@
 #ifndef HUD_HPP
 #define HUD_HPP
 
-#include <imgui.h>
-#include <imgui_impl_sdl2.h>
-#include <imgui_impl_sdlrenderer2.h>
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_sdl2.h>
+#include <imgui/imgui_impl_sdlrenderer2.h>
 
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_ttf.h>

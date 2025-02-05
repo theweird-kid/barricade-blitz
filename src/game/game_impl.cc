@@ -60,7 +60,7 @@ void Game::update() {
         updateScore = false;
         m_Client->SendStatus(playerScore, enemyScore);
         std::cout << "PLAYER: " << playerScore << "\tENEMY: " << enemyScore << std::endl;
-        if(playerScore == 5 || enemyScore == 5) {
+        if(playerScore == 40 || enemyScore == 40) {
             resetGame();
         }
     }

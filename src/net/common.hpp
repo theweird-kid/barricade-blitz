@@ -12,6 +12,7 @@ enum class GameMsg : uint32_t
     Server_Message,
 
     Player_Update,
+    Enemy_Update,
 };
 
 /*

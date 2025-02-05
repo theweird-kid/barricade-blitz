@@ -7,6 +7,7 @@
 
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_render.h>
+#include <memory>
 #include <vector>
 
 class EntityManager {

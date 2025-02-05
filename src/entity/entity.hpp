@@ -69,6 +69,8 @@ public:
 
 private:
 
+    std::shared_ptr<GameClient> m_Client;
+
     std::unique_ptr<Texture> m_Texture;
 
     enum Type m_Type;

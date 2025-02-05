@@ -1,6 +1,7 @@
 #include "entity.hpp"
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_render.h>
+#include <memory>
 
 void Entity::render(SDL_Renderer* renderer)
 {
@@ -10,6 +11,7 @@ void Entity::render(SDL_Renderer* renderer)
 
 void Entity::handleEvent(SDL_Event& event, std::shared_ptr<GameClient> client)
 {
+    if(m_Client == nullptr) m_Client = client;
     // Player movement
     if(m_Type == Entity::Type::PLAYER ) {
         if(event.type == SDL_KEYDOWN) {
@@ -66,6 +68,7 @@ void Entity::handleEvent(SDL_Event& event, std::shared_ptr<GameClient> client)
             }
         }
     }
+
 }
 
 void Entity::reset()
@@ -86,6 +89,20 @@ void Entity::reset()
 
 void Entity::update()
 {
+    // prev vals;
+    float prev_x = m_Xpos, prev_y = m_Ypos;
+
     m_Xpos += m_Xvel;
     m_Ypos += m_Yvel;
+
+    if(this->m_Type == Type::PLAYER) {
+        if(prev_x == m_Xpos && prev_y == m_Ypos) {}
+        else m_Client->SendPlayerData(m_Xpos, m_Ypos);
+    }
+
+    // Get Enemy pos
+    if(m_Client->IsConnected() && !m_Client->Incoming().empty()) {
+        auto msg = m_Client->Incoming().pop_front().msg;
+        m_Client->OnMessage(msg);
+    }
 }

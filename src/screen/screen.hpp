@@ -14,6 +14,7 @@
 #include <SDL2/SDL_keycode.h>
 #include <memory>
 #include <chrono>
+#include <thread>
 
 class Screen
 {
@@ -51,6 +52,10 @@ public:
     // Destructor
     ~Screen()
     {
+        // Join Message thread
+        //m_Client->StopMessageHandling();
+        //if(m_ClientThread.joinable()) { m_ClientThread.join(); }
+
         // Clean up
         ImGui_ImplSDLRenderer2_Shutdown();
         ImGui_ImplSDL2_Shutdown();
@@ -146,8 +151,12 @@ private:
                     case SDLK_g:                        // Start/Stop Game
                         toggle_runGame = true;
                         break;
+                    case SDLK_r:
+                        m_Game->resetGame();
+                        break;
                     case SDLK_m:                        // Play/Pause Music
                         toggle_musicStatus = true;
+                        break;
                     default:
                         break;
                 }
@@ -183,6 +192,7 @@ private:
         // Update Game status
         if(m_Game->running()) m_Game->update();
         else m_Menu->update();
+
     }
 
     void render()

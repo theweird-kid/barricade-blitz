@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-std=c++20 -Wall -Wextra -g -O2 -Iinclude -I/usr/include/SDL2 -D_REENTRANT
+CXXFLAGS=-std=c++20 -Wall -Wextra -g -O2 -Iinclude -I/usr/include/SDL2 -I/usr/include/asio -D_REENTRANT
 LDFLAGS= -Llib -limgui_shared -lSDL2 -lSDL2_image -lSDL2_mixer -Wl,-rpath=./lib
 
 SRCDIR := src

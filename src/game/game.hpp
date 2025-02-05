@@ -6,6 +6,8 @@
 #include "../hud/hud.hpp"
 #include "../sound/sound.hpp"
 
+#include "../net/client.hpp"
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_render.h>
@@ -28,7 +30,7 @@ public:
         ONLINE
     };
 
-    Game(SDL_Window* window, SDL_Renderer* renderer, Sound* sound);
+    Game(SDL_Window* window, SDL_Renderer* renderer, Sound* sound, std::shared_ptr<GameClient> client);
     ~Game();
 
     void init();
@@ -71,6 +73,8 @@ private:
     int playerScore = 0;
     int enemyScore = 0;
 
+    // Net Connection
+    std::shared_ptr<GameClient> m_Client;
 };
 
 #endif // GAME_HPP

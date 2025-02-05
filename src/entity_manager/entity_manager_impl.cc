@@ -1,5 +1,6 @@
 #include "entity_manager.hpp"
 #include <SDL2/SDL_events.h>
+#include <memory>
 
 void EntityManager::addEntity(const std::string& path, SDL_Renderer* renderer, Entity::Type t)
 {
@@ -32,10 +33,10 @@ void EntityManager::addEntity(const std::string& path, SDL_Renderer* renderer, E
     }
 }
 
-void EntityManager::handleEvent(SDL_Event& event)
+void EntityManager::handleEvent(SDL_Event& event, std::shared_ptr<GameClient> client)
 {
     for(auto& entity : m_Entities) {
-        entity->handleEvent(event);
+        entity->handleEvent(event, client);
 
         if(entity->getType() == Entity::Type::BALL) continue;
 
@@ -117,7 +118,7 @@ void EntityManager::handleCollison(Sound* gameSound, bool& updateScore)
 void EntityManager::reset()
 {
     for(auto& entity : m_Entities) {
-        entity.reset();
+        entity->reset();
     }
 }
 

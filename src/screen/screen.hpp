@@ -36,8 +36,12 @@ public:
         // Initialize the Menu Object
         m_Menu = std::make_unique<Menu>(m_Window.get(), m_Renderer.get());
 
+        // Connect to remote
+        m_Client = std::make_shared<GameClient>();
+        m_Client->Connect("127.0.0.1", 60000);
+
         // Init Game object
-        m_Game = std::make_unique<Game>(m_Window.get(), m_Renderer.get(), m_GameSound.get());
+        m_Game = std::make_unique<Game>(m_Window.get(), m_Renderer.get(), m_GameSound.get(), m_Client);
         m_Game->init();
 
         // Play the music
@@ -119,6 +123,7 @@ private:
         SDL_SetRenderDrawColor(m_Renderer.get(), 255, 255, 255, 255); // Set background color to white
         SDL_RenderClear(m_Renderer.get());
         SDL_RenderPresent(m_Renderer.get());
+
     }
 
     void handleEvents()
@@ -215,6 +220,9 @@ private:
 
     // For FPS calculation
     std::chrono::high_resolution_clock::time_point m_LastFrameTime;
+
+    // Net Connection
+    std::shared_ptr<GameClient> m_Client;
 };
 
 #endif // SCREEN_HPP

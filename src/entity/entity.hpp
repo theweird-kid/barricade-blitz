@@ -2,6 +2,7 @@
 #define ENTITY_HPP
 
 #include "../texture.hpp"
+#include "./../net/client.hpp"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_events.h>
@@ -38,7 +39,7 @@ public:
 
     ~Entity() {}
 
-    void handleEvent(SDL_Event& event);
+    void handleEvent(SDL_Event& event, std::shared_ptr<GameClient> client);
     void update();
     void render(SDL_Renderer* renderer);
 

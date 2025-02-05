@@ -7,8 +7,8 @@
 #include <SDL2/SDL_video.h>
 #include <memory>
 
-Game::Game(SDL_Window* window, SDL_Renderer* renderer, Sound* sound)
-    : m_Window(window), m_Renderer(renderer), m_GameSound(sound)
+Game::Game(SDL_Window* window, SDL_Renderer* renderer, Sound* sound, std::shared_ptr<GameClient> client)
+    : m_Window(window), m_Renderer(renderer), m_GameSound(sound), m_Client(client)
 {
     init();
     m_GameMode = GameMode::OFFLINE;
@@ -46,11 +46,10 @@ void Game::handleEvents(SDL_Event& event) {
         }
     }
     // Pass the event to the entity manager
-    m_EntityManager->handleEvent(event);
+    m_EntityManager->handleEvent(event, m_Client);
 }
 
 void Game::update() {
-    // Update game logic here
 
     // handle Collision
     m_EntityManager->handleCollison(m_GameSound, updateScore);
@@ -58,11 +57,11 @@ void Game::update() {
     // Update Huds
     if(updateScore)
     {
-        //m_Hud->update();
         updateScore = false;
+        m_Client->SendStatus(playerScore, enemyScore);
         std::cout << "PLAYER: " << playerScore << "\tENEMY: " << enemyScore << std::endl;
         if(playerScore == 5 || enemyScore == 5) {
-            //resetGame();
+            resetGame();
         }
     }
 }

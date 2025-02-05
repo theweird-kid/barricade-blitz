@@ -8,7 +8,7 @@ void Entity::render(SDL_Renderer* renderer)
     m_Texture->render(renderer, m_Xpos, m_Ypos);
 }
 
-void Entity::handleEvent(SDL_Event& event)
+void Entity::handleEvent(SDL_Event& event, std::shared_ptr<GameClient> client)
 {
     // Player movement
     if(m_Type == Entity::Type::PLAYER ) {

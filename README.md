@@ -82,6 +82,16 @@ This will install the shared library to the appropriate system directories:
 - The library will be installed to `/usr/local/lib` (or equivalent on your system).
 - The header files will be installed to `/usr/local/include/imgui` (or equivalent on your system).
 
+## Uninstalling the ImGui Shared Library
+
+To uninstall the ImGui shared library, run the following command from the `build` directory:
+
+```sh
+sudo make uninstall
+```
+
+This will remove the installed library and header files from the system directories.
+
 ## Building the Project
 
 To compile the project, follow these steps:

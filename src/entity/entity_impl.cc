@@ -95,14 +95,15 @@ void Entity::update()
     m_Xpos += m_Xvel;
     m_Ypos += m_Yvel;
 
-    if(this->m_Type == Type::PLAYER) {
+    if(m_Client && m_Client->IsConnected() && this->m_Type == Type::PLAYER) {
         if(prev_x == m_Xpos && prev_y == m_Ypos) {}
-        else m_Client->SendPlayerData(m_Xpos, m_Ypos);
+        else {
+            m_Client->SendPlayerData(m_Xpos, m_Ypos);
+        }
     }
 
-    // Get Enemy pos
-    if(m_Client->IsConnected() && !m_Client->Incoming().empty()) {
-        auto msg = m_Client->Incoming().pop_front().msg;
-        m_Client->OnMessage(msg);
+    else if(m_Client && m_Client->IsConnected() && this->m_Type == Type::BALL) {
+        m_Client->SendBallData(m_Xpos, m_Ypos, m_Xvel, m_Yvel);
     }
+
 }

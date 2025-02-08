@@ -2,6 +2,7 @@
 #define SCREEN_HPP
 
 // Include ImGui
+#include <SDL2/SDL_render.h>
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_sdl2.h>
 #include <imgui/imgui_impl_sdlrenderer2.h>
@@ -109,7 +110,7 @@ private:
         }
 
         // Create the renderer
-        m_Renderer = std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)>(SDL_CreateRenderer(m_Window.get(), -1, SDL_RENDERER_SOFTWARE), SDL_DestroyRenderer);
+        m_Renderer = std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)>(SDL_CreateRenderer(m_Window.get(), -1, SDL_RENDERER_ACCELERATED), SDL_DestroyRenderer);
 
         if (m_Renderer == nullptr) {
             std::cerr << "Renderer could not be created! SDL_Error: " << SDL_GetError() << std::endl;

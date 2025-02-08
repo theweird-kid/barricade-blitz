@@ -13,8 +13,6 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_video.h>
 #include <memory>
-#include <vector>
-#include <iostream>
 
 
 class Game{
@@ -47,6 +45,16 @@ public:
 
     // Entity Manager
     void addEntity(const std::string& path, Entity::Type t);
+
+private:
+    // Util methods
+    void ParseScoreUpdate(const std::string& message, int player, int enemy);
+
+    void ParseEnemyUpdateMessage(const std::string& message, float& xPos, float& yPos);
+    void TransformEnemyCoordinates(float& xPos, float& yPos);
+
+    void ParseBallUpdateMessage(const std::string& message, float& xPos, float& yPos, float& xVel, float& yVel);
+    void TransformBallCoordinates(float& xPos, float& yPos, float& xVel, float& yVel);
 
 private:
     bool isGameRunning = false;

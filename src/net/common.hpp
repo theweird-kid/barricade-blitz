@@ -10,9 +10,12 @@ enum class GameMsg : uint32_t
     Server_Ping,
     Message_All,
     Server_Message,
+    Client_Accepted,
 
+    Score_Update,
     Player_Update,
     Enemy_Update,
+    Ball_Update,
 };
 
 /*
@@ -42,4 +45,10 @@ struct sMessageType
         std::memcpy(data.data(), message.data(), message.size());
         msg << *this;
     }
+};
+
+
+struct InternalMessageType {
+    GameMsg id;
+    std::string message;
 };

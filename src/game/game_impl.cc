@@ -58,10 +58,40 @@ void Game::update() {
     if(updateScore)
     {
         updateScore = false;
-        m_Client->SendStatus(playerScore, enemyScore);
+        m_Client->SendScore(playerScore, enemyScore);
         std::cout << "PLAYER: " << playerScore << "\tENEMY: " << enemyScore << std::endl;
         if(playerScore == 40 || enemyScore == 40) {
             resetGame();
+        }
+    }
+
+    // Get Data From Server
+    if(m_Client && m_Client->IsConnected() && !m_Client->Incoming().empty()) {
+        auto msg = m_Client->Incoming().pop_front().msg;
+        InternalMessageType mess = m_Client->OnMessage(msg);
+
+        if(mess.id == GameMsg::Score_Update) {
+            int player, enemy;
+            ParseScoreUpdate(mess.message, player, enemy);
+            // Reverse the scores
+            playerScore = enemy;
+            enemyScore = player;
+        }
+
+        // Update Enemy Position
+        else if(mess.id == GameMsg::Enemy_Update) {
+            float xPos, yPos;
+            ParseEnemyUpdateMessage(mess.message, xPos, yPos);
+            TransformEnemyCoordinates(xPos, yPos);
+            m_EntityManager->setEnemyPos(xPos, yPos);
+        }
+
+        // Update Ball Position and Velocity
+        else if(mess.id == GameMsg::Ball_Update) {
+            float xPos, yPos, xVel, yVel;
+            ParseBallUpdateMessage(mess.message, xPos, yPos, xVel, yVel);
+            TransformBallCoordinates(xPos, yPos, xVel, yVel);
+            m_EntityManager->setBallData(xPos, yPos, xVel, yVel);
         }
     }
 }
@@ -103,4 +133,55 @@ void Game::resetGame()
 void Game::clean() {
     // No need to explicitly destroy gWindow and gRenderer,
     // as the unique_ptrs will handle it automatically
+}
+
+void Game::ParseScoreUpdate(const std::string& message, int player, int enemy) {
+    // Assuming the message format is "PLAYER: <player>\tENEMY: <enemy>"
+    size_t playerStart = message.find("PLAYER: ") + 8;
+    size_t playerEnd = message.find("\t", playerStart);
+    player = std::stoi(message.substr(playerStart, playerEnd - playerStart));
+
+    size_t enemyStart = message.find("ENEMY: ") + 7;
+    enemy = std::stoi(message.substr(enemyStart));
+}
+
+void Game::ParseEnemyUpdateMessage(const std::string& message, float& xPos, float& yPos) {
+        // Assuming the message format is "Xpos: <xPos>\tYpos: <yPos>"
+        size_t xPosStart = message.find("Xpos: ") + 6;
+        size_t xPosEnd = message.find("\t", xPosStart);
+        xPos = std::stoi(message.substr(xPosStart, xPosEnd - xPosStart));
+
+        size_t yPosStart = message.find("Ypos: ") + 6;
+        yPos = std::stoi(message.substr(yPosStart));
+    }
+
+void Game::TransformEnemyCoordinates(float& xPos, float& yPos) {
+        // Example transformation: mirror the position horizontally and vertically
+        xPos = SCREEN_WIDTH - xPos;
+        yPos = SCREEN_HEIGHT - yPos;
+}
+
+void Game::ParseBallUpdateMessage(const std::string& message, float& xPos, float& yPos, float& xVel, float& yVel) {
+    size_t xPosStart = message.find("Xpos: ") + 6;
+    size_t xPosEnd = message.find("\t", xPosStart);
+    xPos = std::stof(message.substr(xPosStart, xPosEnd - xPosStart));
+
+    size_t yPosStart = message.find("Ypos: ") + 6;
+    size_t yPosEnd = message.find("\t", yPosStart);
+    yPos = std::stof(message.substr(yPosStart, yPosEnd - yPosStart));
+
+    size_t xVelStart = message.find("Xvel: ") + 6;
+    size_t xVelEnd = message.find("\t", xVelStart);
+    xVel = std::stof(message.substr(xVelStart, xVelEnd - xVelStart));
+
+    size_t yVelStart = message.find("Yvel: ") + 6;
+    yVel = std::stof(message.substr(yVelStart));
+}
+
+void Game::TransformBallCoordinates(float& xPos, float& yPos, float& xVel, float& yVel) {
+    // Example transformation: mirror the position horizontally and vertically
+    xPos = SCREEN_WIDTH - xPos;
+    yPos = SCREEN_HEIGHT - yPos;
+    xVel = -xVel;
+    yVel = -yVel;
 }

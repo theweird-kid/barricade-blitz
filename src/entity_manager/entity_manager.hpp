@@ -25,7 +25,8 @@ public:
     // Entities
     std::vector<std::unique_ptr<Entity>> m_Entities;
 
-
+    void setEnemyPos(float x, float y);
+    void setBallData(float x_pos, float y_pos, float x_vel, float y_vel);
 private:
 
     int& m_PlayerScore;

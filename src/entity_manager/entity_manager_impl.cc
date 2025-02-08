@@ -10,7 +10,7 @@ void EntityManager::addEntity(const std::string& path, SDL_Renderer* renderer, E
         int y = m_SCREEN_HEIGHT - 70;
         int width = 100;
         int height = 20;
-        std::pair<int,int> speed = {2, 0};
+        std::pair<float,float> speed = {0.15, 0};
         m_Entities.push_back(std::make_unique<Entity>(path, renderer, x, y, width, height, speed, Entity::Type::PLAYER));
     }
     // CREATE ENEMY
@@ -19,7 +19,7 @@ void EntityManager::addEntity(const std::string& path, SDL_Renderer* renderer, E
         int y = 60;
         int width = 100;
         int height = 20;
-        std::pair<int,int> speed = {2, 0};
+        std::pair<float,float> speed = {0.15, 0};
         m_Entities.push_back(std::make_unique<Entity>(path, renderer, x, y, width, height, speed, Entity::Type::ENEMY));
     }
     // CREATE BALL
@@ -28,7 +28,7 @@ void EntityManager::addEntity(const std::string& path, SDL_Renderer* renderer, E
         int y = m_SCREEN_HEIGHT / 2;
         int width = 30;
         int height = 30;
-        std::pair<int,int> speed = {1, 1};
+        std::pair<float,float> speed = {0.08, 0.08};
         m_Entities.push_back(std::make_unique<Entity>(path, renderer, x, y, width, height, speed, Entity::Type::BALL));
     }
 }
@@ -128,4 +128,15 @@ void EntityManager::render(SDL_Renderer* renderer)
     for(auto& entity : m_Entities) {
         entity->render(renderer);
     }
+}
+
+void EntityManager::setEnemyPos(float x, float y) {
+    if(m_Entities[1]->getX() != x)m_Entities[1]->setX(x);
+    if(m_Entities[1]->getY() != y)m_Entities[1]->setY(y);
+}
+
+void EntityManager::setBallData(float x_pos, float y_pos, float x_vel, float y_vel) {
+    m_Entities[2]->setX(x_pos);
+    m_Entities[2]->setY(y_pos);
+    m_Entities[2]->setVelocity({x_vel, y_vel});
 }

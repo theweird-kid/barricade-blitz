@@ -1,6 +1,8 @@
 # Barricade Blitz
 
 Barricade Blitz is a game project that uses SDL2 for rendering and handling events. This project includes a Makefile to compile and link the code.
+![Game Screenshot 1](images/menu.png)
+![Game Screenshot 2](images/game.png)
 
 ## Prerequisites
 
@@ -95,6 +97,13 @@ After successfully building the project, you can run the executable:
 ```sh
 ./bin/main
 ```
+## Game Controls
+
+- **G**: Start the game
+- **R**: Reset the game
+- **M**: Play/Stop music
+- **Left Arrow Key**: Move the player to the left
+- **Right Arrow Key**: Move the player to the right
 
 ## Cleaning Up
 

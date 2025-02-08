@@ -30,8 +30,8 @@ void Game::init() {
     // Initialize the HUD
     m_Hud = std::make_unique<Hud>(m_Renderer, playerScore, enemyScore);
 
-    addEntity("assets/sample.bmp", Entity::Type::PLAYER);
-    addEntity("assets/sample.bmp", Entity::Type::ENEMY);
+    addEntity("assets/blue.bmp", Entity::Type::PLAYER);
+    addEntity("assets/red.bmp", Entity::Type::ENEMY);
     addEntity("assets/ball.bmp", Entity::Type::BALL);
 
 }

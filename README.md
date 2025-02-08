@@ -26,8 +26,9 @@ On Fedora, you can install these dependencies using the following commands:
 
 ```sh
 sudo dnf update
-sudo dnf install cmake SDL2-devel
+sudo dnf install g++ SDL2-devel SDL2_image-devel SDL2_mixer-devel asio-devel
 ```
+
 # ImGui Shared Library
 
 This project builds and installs the ImGui shared library using CMake. ImGui is a bloat-free graphical user interface library for C++.

@@ -154,6 +154,7 @@ private:
                         break;
                     case SDLK_r:
                         m_Game->resetGame();
+                        m_Client->SendReset();
                         break;
                     case SDLK_m:                        // Play/Pause Music
                         toggle_musicStatus = true;

@@ -39,6 +39,12 @@ public:
         Send(msg);
     }
 
+    void SendReset() {
+        wkd::net::message<GameMsg> msg;
+        msg.header.id = GameMsg::Reset_Game;
+        Send(msg);
+    }
+
     void Connect(const std::string& host, const uint16_t port) {
         std::cout << "Connecting to " << host << ":" << port << std::endl;
         wkd::net::client_interface<GameMsg>::Connect(host, port);
@@ -74,6 +80,9 @@ public:
                 return {GameMsg::Ball_Update, clientMessage};
             }
             break;
+            case GameMsg::Reset_Game: {
+                return {GameMsg::Reset_Game, "Reset Game"};
+            }
             default:
                 return {GameMsg::Server_Message, "Unknown message received from server."};
                 break;

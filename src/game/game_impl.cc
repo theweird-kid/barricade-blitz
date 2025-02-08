@@ -60,7 +60,14 @@ void Game::update() {
         updateScore = false;
         m_Client->SendScore(playerScore, enemyScore);
         std::cout << "PLAYER: " << playerScore << "\tENEMY: " << enemyScore << std::endl;
-        if(playerScore == 40 || enemyScore == 40) {
+        if(playerScore == 10 || enemyScore == 10) {
+            if(playerScore == 10) {
+                std::cout << "Player Wins!" << std::endl;
+            }
+            else {
+                std::cout << "Enemy Wins!" << std::endl;
+            }
+            m_Client->SendReset();
             resetGame();
         }
     }
@@ -70,6 +77,7 @@ void Game::update() {
         auto msg = m_Client->Incoming().pop_front().msg;
         InternalMessageType mess = m_Client->OnMessage(msg);
 
+        // Update Score
         if(mess.id == GameMsg::Score_Update) {
             int player, enemy;
             ParseScoreUpdate(mess.message, player, enemy);
@@ -92,6 +100,11 @@ void Game::update() {
             ParseBallUpdateMessage(mess.message, xPos, yPos, xVel, yVel);
             TransformBallCoordinates(xPos, yPos, xVel, yVel);
             m_EntityManager->setBallData(xPos, yPos, xVel, yVel);
+        }
+
+        // Reset Game
+        else if(mess.id == GameMsg::Reset_Game) {
+            resetGame();
         }
     }
 }

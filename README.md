@@ -20,6 +20,14 @@ On Debian-based systems, you can install these dependencies using the following 
 sudo apt-get update
 sudo apt-get install g++ libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libasio-dev
 ```
+### Fedora
+
+On Fedora, you can install these dependencies using the following commands:
+
+```sh
+sudo dnf update
+sudo dnf install cmake SDL2-devel
+```
 # ImGui Shared Library
 
 This project builds and installs the ImGui shared library using CMake. ImGui is a bloat-free graphical user interface library for C++.

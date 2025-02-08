@@ -18,41 +18,6 @@ On Debian-based systems, you can install these dependencies using the following 
 sudo apt-get update
 sudo apt-get install g++ libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libasio-dev
 ```
-## Building the Project
-
-To compile the project, follow these steps:
-
-1. Clone the repository:
-    ```sh
-    git clone https://github.com/theweird-kid/barricade-blitz.git
-    cd barricade-blitz
-    ```
-
-2. Build the project using the provided Makefile:
-    ```sh
-    make
-    ```
-
-This will create the `bin` directory and compile the source files into an executable named `main` inside the `bin` directory.
-
-## Running the Project
-
-After successfully building the project, you can run the executable:
-
-```sh
-./bin/main
-```
-
-## Cleaning Up
-
-To clean up the compiled files, you can use the `clean` target in the Makefile:
-
-```sh
-make clean
-```
-
-This will remove the `main` executable from the `bin` directory.
-
 # ImGui Shared Library
 
 This project builds and installs the ImGui shared library using CMake. ImGui is a bloat-free graphical user interface library for C++.
@@ -105,3 +70,38 @@ This will install the shared library to the appropriate system directories:
 
 - The library will be installed to `/usr/local/lib` (or equivalent on your system).
 - The header files will be installed to `/usr/local/include/imgui` (or equivalent on your system).
+
+## Building the Project
+
+To compile the project, follow these steps:
+
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/theweird-kid/barricade-blitz.git
+    cd barricade-blitz
+    ```
+
+2. Build the project using the provided Makefile:
+    ```sh
+    make
+    ```
+
+This will create the `bin` directory and compile the source files into an executable named `main` inside the `bin` directory.
+
+## Running the Project
+
+After successfully building the project, you can run the executable:
+
+```sh
+./bin/main
+```
+
+## Cleaning Up
+
+To clean up the compiled files, you can use the `clean` target in the Makefile:
+
+```sh
+make clean
+```
+
+This will remove the `main` executable from the `bin` directory.
